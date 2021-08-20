@@ -1,11 +1,35 @@
 ## Docker commands used to build the application 
 # TODO: insert the docker build command
+docker build -t techtrends .
 
 ## Docker commands used to run the application
 # TODO: insert the docker run command
+docker run -d -p 7111:3111 --name my-techtrends techtrends
 
 ## Docker commands used to get the application logs
 # TODO: insert the docker logs command
+docker logs -f my-techtrends
 
 ## Logs from the container running the TechTrends application
 # TODO: paste logs from the Docker container 
+
+INFO:werkzeug: * Running on http://172.17.0.3:3111/ (Press CTRL+C to quit)
+INFO:werkzeug: * Restarting with stat
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 581-924-662
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:25:40] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:25:40] "GET /static/css/main.css HTTP/1.1" 200 -
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:25:40] "GET /favicon.ico HTTP/1.1" 404 -
+INFO:app:08/20/2021, 22:25:44, Article '2020 CNCF Annual Report' retrieved!
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:25:44] "GET /1 HTTP/1.1" 200 -
+INFO:app:08/20/2021, 22:25:49, Article 'KubeCon + CloudNativeCon 2021' retrieved!
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:25:49] "GET /2 HTTP/1.1" 200 -
+INFO:app:08/20/2021, 22:25:53, The "About Us" page is retrieved
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:25:53] "GET /about HTTP/1.1" 200 -
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:25:58] "GET /create HTTP/1.1" 200 -
+INFO:app:08/20/2021, 22:26:19, Article 'This is a Post test' has been created
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:26:19] "POST /create HTTP/1.1" 302 -
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:26:19] "GET / HTTP/1.1" 200 -
+INFO:app:08/20/2021, 22:26:25, Article 'This is a Post test' retrieved!
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:26:25] "GET /7 HTTP/1.1" 200 -
+INFO:werkzeug:192.168.50.1 - - [20/Aug/2021 22:26:29] "GET / HTTP/1.1" 200 -
