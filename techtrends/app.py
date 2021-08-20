@@ -1,6 +1,8 @@
 import sqlite3
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
+import logging
+from datetime import datetime
 from werkzeug.exceptions import abort
 
 # Function to get a database connection.
@@ -21,19 +23,18 @@ def get_post(post_id):
     connection.close()
     return post
 
-# Function to get a post using its ID
-def post_total():
-    connection = get_db_connection()
-    post = connection.execute('SELECT * FROM posts WHERE id = ?',
-                        (post_id,)).fetchone()
-    connection.close()
-    return post
+# Function to display log
+def log(msg):
+    dt = datetime.now()
+    app.logger.info(dt.strftime('%m/%d/%Y, %H:%M:%S, {}'.format(msg)))
 
 # Define the Flask application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
 app.config['POST_TOTAL'] = 0
 app.config['CONNECTION_TOTAL'] = 0
+
+logging.basicConfig(level=logging.DEBUG)
 
 # Define the main route of the web application 
 @app.route('/')
@@ -42,9 +43,7 @@ def index():
     posts = connection.execute('SELECT * FROM posts').fetchall()
     connection.close()
 
-    print(len(posts))
-    app.config['POST_TOTAL'] = len(posts)
-    print(f" {app.config['POST_TOTAL']} posts")
+    app.logger.error("this is an error")
     return render_template('index.html', posts=posts)
 
 # Define how each individual article is rendered 
@@ -53,13 +52,16 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-      return render_template('404.html'), 404
+        log("A non-existing article is accessed and a 404 page is returned.")
+        return render_template('404.html'), 404
     else:
-      return render_template('post.html', post=post)
+        log("Article '{}' retrieved!".format(post['title']))
+        return render_template('post.html', post=post)
 
 # Define the About Us page
 @app.route('/about')
 def about():
+    log('The "About Us" page is retrieved')
     return render_template('about.html')
 
 # Define the post creation functionality 
@@ -78,6 +80,7 @@ def create():
             connection.commit()
             connection.close()
 
+            log("Article '{}' has been created".format(title))
             return redirect(url_for('index'))
 
     return render_template('create.html')
