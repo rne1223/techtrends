@@ -8,6 +8,9 @@ from werkzeug.exceptions import abort
 def get_db_connection():
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
+
+    app.config['CONNECTION_TOTAL'] += 1
+
     return connection
 
 # Function to get a post using its ID
@@ -18,9 +21,19 @@ def get_post(post_id):
     connection.close()
     return post
 
+# Function to get a post using its ID
+def post_total():
+    connection = get_db_connection()
+    post = connection.execute('SELECT * FROM posts WHERE id = ?',
+                        (post_id,)).fetchone()
+    connection.close()
+    return post
+
 # Define the Flask application
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your secret key'
+app.config['POST_TOTAL'] = 0
+app.config['CONNECTION_TOTAL'] = 0
 
 # Define the main route of the web application 
 @app.route('/')
@@ -28,6 +41,10 @@ def index():
     connection = get_db_connection()
     posts = connection.execute('SELECT * FROM posts').fetchall()
     connection.close()
+
+    print(len(posts))
+    app.config['POST_TOTAL'] = len(posts)
+    print(f" {app.config['POST_TOTAL']} posts")
     return render_template('index.html', posts=posts)
 
 # Define how each individual article is rendered 
@@ -65,12 +82,18 @@ def create():
 
     return render_template('create.html')
 
-# Define the metrics endpoint 
+# Metrics endpoint 
 @app.route('/metrics')
 def metrics():
-    pass
+    response = json.dumps({ 
+        "db_connection_count": app.config['CONNECTION_TOTAL'] , 
+        "post_count": app.config['POST_TOTAL']
+        }
+    ) 
 
-# Define the healthz endpoint 
+    return response, 200, {'Content-Type': 'application/json'}
+
+# Healthz endpoint 
 @app.route('/healthz')
 def healthz():
     response = json.dumps(
