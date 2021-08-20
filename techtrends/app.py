@@ -43,7 +43,8 @@ def index():
     posts = connection.execute('SELECT * FROM posts').fetchall()
     connection.close()
 
-    app.logger.error("this is an error")
+    app.config['POST_TOTAL'] = len(posts)
+
     return render_template('index.html', posts=posts)
 
 # Define how each individual article is rendered 
@@ -107,4 +108,4 @@ def healthz():
 
 # start the application on port 3111
 if __name__ == "__main__":
-   app.run(host='0.0.0.0', port='3111')
+   app.run(host='0.0.0.0', port='3111', debug=True)

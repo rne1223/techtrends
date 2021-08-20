@@ -35,6 +35,9 @@ install_docker() {
     sudo usermod -G docker -a vagrant 
     sudo systemctl restart docker
     newgrp docker
+
+    sudo curl https://raw.githubusercontent.com/docker/docker-ce/master/components/cli/contrib/completion/bash/docker -o /etc/bash_completion.d/docker
+    sudo curl -L https://raw.githubusercontent.com/docker/compose/1.24.0/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
 }
 
 install_go() {
