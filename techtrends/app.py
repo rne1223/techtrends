@@ -65,6 +65,20 @@ def create():
 
     return render_template('create.html')
 
+# Define the metrics endpoint 
+@app.route('/metrics')
+def metrics():
+    pass
+
+# Define the healthz endpoint 
+@app.route('/healthz')
+def healthz():
+    response = json.dumps(
+        { "result": " OK - healthy", }
+    ) 
+
+    return response, 200, {'Content-Type': 'application/json'}
+
 # start the application on port 3111
 if __name__ == "__main__":
    app.run(host='0.0.0.0', port='3111')

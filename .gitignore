@@ -1,5 +1,7 @@
 # General
 .vagrant/
+.vscode/
+__pycache__/
 
 # Log files (if you are creating logs in debug mode, uncomment this)
 # *.log
