@@ -60,17 +60,17 @@ install_K3s() {
     sudo chown vagrant:vagrant '/etc/rancher/k3s/k3s.yaml'
 }
 
-install gh(){
+install_gh(){
     step "===== Installing gh ====="
     VERSION=`curl  "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-`
     curl -sSL https://github.com/cli/cli/releases/download/v${VERSION}/gh_${VERSION}_linux_amd64.tar.gz -o gh_${VERSION}_linux_amd64.tar.gz
     tar xvf gh_${VERSION}_linux_amd64.tar.gz
     cp gh_${VERSION}_linux_amd64/bin/gh ${ENV_BIN}
     sudo cp -r gh_${VERSION}_linux_amd64/share/man/man1/* /usr/share/man/man1/
+
     # gh autocomplete
-    echo "eval \"$(gh completion -s bash)\"" >> "${ENV_PROFILE}"
-    rm -r "gh* "
-    cd 
+    echo "eval '$(gh completion -s bash)'" >> "${ENV_PROFILE}"
+    rm -r gh.*
 }
 
 
@@ -82,17 +82,16 @@ modify_bashrc() {
     echo "source /usr/share/bash-completion/bash_completion && source <(kubectl completion bash)" >> "${ENV_BASHRC}"
     echo 'alias k=kubectl' >>  "${ENV_BASHRC}"
     echo 'complete -F __start_kubectl k' >> "${ENV_BASHRC}"
-    # echo "source /usr/share/bash-completion/bash_completion && source <(helm completion bash)" >> "${ENV_BASHRC}"
 }
 
 
 main() {
     update_zypper
     install_docker
-    # install_go
     install_git
     install_pip_flask
     install_K3s
+    install_gh
     modify_bashrc
 
     echo ==========
