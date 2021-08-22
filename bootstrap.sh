@@ -61,6 +61,7 @@ install_K3s() {
     step "===== Installing K3s ====="
     curl -sfL https://get.k3s.io | sh -
     sudo chown vagrant:vagrant '/etc/rancher/k3s/k3s.yaml'
+    ln -s '/etc/rancher/k3s/k3s.yaml kube.config'
 }
 
 install_gh(){
@@ -73,7 +74,8 @@ install_gh(){
 
     # gh autocomplete
     echo "eval '$(gh completion -s bash)'" >> "${ENV_PROFILE}"
-    rm -r gh.*
+    rm -r gh_${VERSION}_linux_amd64 
+    rm gh_${VERSION}_linux_amd64.tar.gz
 }
 
 
