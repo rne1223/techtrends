@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	# config.vm.provision "shell" , path: "./bootstrap.sh"
 
 	# Running bootstrap script to update zypper and modify .bashrc
-	config.vm.provision "file", path: "./bootstrap.sh", destination: "/bin/bootstrap.sh"
+	config.vm.provision "file", source: "./bootstrap.sh", destination: "/home/vagrant/bin/"
 
     config.vm.define "default" do |default|
        default.vm.hostname = "techtrends"
