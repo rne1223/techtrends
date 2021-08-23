@@ -48,23 +48,11 @@ install_go() {
 install_git() {
     step "===== Installing Git ====="
     sudo zypper install -y git
+    git config --global user.email "rne1223@gmail.com"
+    git config --global user.name "rne1223"
 }
 
-install_pip_flask(){
-    step "===== Installing Pip and Flask ====="
-    sudo zypper install -y python3-pip
-    sudo pip3 install --upgrade pip
-    sudo pip install flask
-}
-
-install_K3s() {
-    step "===== Installing K3s ====="
-    curl -sfL https://get.k3s.io | sh -
-    sudo chown vagrant:vagrant '/etc/rancher/k3s/k3s.yaml'
-    ln -s '/etc/rancher/k3s/k3s.yaml kube.config'
-}
-
-install_gh(){
+install_gh() {
     step "===== Installing gh ====="
     VERSION=`curl  "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c2-`
     curl -sSL https://github.com/cli/cli/releases/download/v${VERSION}/gh_${VERSION}_linux_amd64.tar.gz -o gh_${VERSION}_linux_amd64.tar.gz
@@ -78,6 +66,29 @@ install_gh(){
     rm gh_${VERSION}_linux_amd64.tar.gz
 }
 
+install_pip_flask() {
+    step "===== Installing Pip and Flask ====="
+    sudo zypper install -y python3-pip
+    sudo pip3 install --upgrade pip
+    sudo pip install flask
+}
+
+install_K3s() {
+    step "===== Installing K3s ====="
+    curl -sfL https://get.k3s.io | sh -
+    sudo chown vagrant:vagrant '/etc/rancher/k3s/k3s.yaml'
+    ln -s '/etc/rancher/k3s/k3s.yaml kube.config'
+}
+
+
+install_argocd() {
+    step "===== Installing ArgoCD ====="
+    kubectl create namespace argocd
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    kubectl apply -f /home/vagrant/techtrends/argocd/argocd-server-nodeport.yaml
+    ARGO_PASSWORD='kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d'
+    echo "ArgoCD Password: $(eval $ARGOCD_PASSWORD)"
+}
 
 modify_bashrc() {
     step "===== Updating ~/.bashrc ====="
@@ -97,6 +108,7 @@ main() {
     install_pip_flask
     install_K3s
     install_gh
+    install_argocd
     modify_bashrc
 
     echo ==========
