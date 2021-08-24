@@ -1,0 +1,9 @@
+apiVersion: v1
+name: techtrends
+description: Install a techtrends application on Kubernetes using argocd
+keywords:
+    - techtrends
+version: 1.0.0
+maintainers:
+- name: rne1223 
+  email: rne1223@gmail.com 

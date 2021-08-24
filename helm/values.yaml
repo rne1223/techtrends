@@ -1,0 +1,39 @@
+namespace:
+  name: sandbox
+
+service:
+  port: 4111
+  targetPort: 3111 
+  protocol: TCP
+  type: ClusterIP
+
+image:
+  repository: rne1223/techtrends 
+  tag: latest 
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+resources:
+  requests:
+    memory: 64Mi
+    cpu: 250m 
+  limits:
+    memory: 128Mi
+    cpu: 500m
+
+# using trick from https://helm.sh/docs/howto/charts_tips_and_tricks/
+containerPort: "{{ .Values.service.targetPort }}"
+# containerPort: 3111 
+
+livenessProve:
+  path: /healthz
+  # port: 3111 
+  # using trick from https://helm.sh/docs/howto/charts_tips_and_tricks/
+  port: "{{ .Values.service.targetPort }}"
+
+readinessProbe:
+  path: /healthz
+  # port: 3111 
+  # using trick from https://helm.sh/docs/howto/charts_tips_and_tricks/
+  port: "{{ .Values.service.targetPort }}"
