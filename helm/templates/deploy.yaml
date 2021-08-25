@@ -18,11 +18,11 @@ spec:
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }} 
         resources:
 {{ toYaml .Values.resources | indent 10}}
-      ports:
-      - containerPort: {{ .Values.containerPort }} 
-        livenessProbe:
-          httpGet:
-{{ toYaml .Values.livenessProbe | indent 12 }}
-        readinessProbe:
-          httpGet:
-{{toYaml .Values.readinessProbe | indent 12 }}
+        ports:
+        - containerPort: {{ .Values.containerPort }} 
+          livenessProbe:
+            httpGet:
+  {{ toYaml .Values.livenessProbe | indent 12 }}
+          readinessProbe:
+            httpGet:
+  {{toYaml .Values.readinessProbe | indent 12 }}
