@@ -86,7 +86,7 @@ install_argocd() {
     kubectl create namespace argocd
     kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
     kubectl apply -f /home/vagrant/techtrends/argocd/argocd-server-nodeport.yaml
-    ARGO_PASSWORD='kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d'
+    ARGOCD_PASSWORD='kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d'
     echo "ArgoCD Password: $(eval $ARGOCD_PASSWORD)"
 }
 
