@@ -23,17 +23,17 @@ resources:
     cpu: 500m
 
 # using trick from https://helm.sh/docs/howto/charts_tips_and_tricks/
-containerPort: "{{ .Values.service.targetPort }}"
+containerPort: {{ .Values.service.targetPort }}
 # containerPort: 3111 
 
 livenessProve:
   path: /healthz
   # port: 3111 
   # using trick from https://helm.sh/docs/howto/charts_tips_and_tricks/
-  port: "{{ .Values.service.targetPort }}"
+  port: {{ .Values.service.targetPort }}
 
 readinessProbe:
   path: /healthz
   # port: 3111 
   # using trick from https://helm.sh/docs/howto/charts_tips_and_tricks/
-  port: "{{ .Values.service.targetPort }}"
+  port: {{ .Values.service.targetPort }}
