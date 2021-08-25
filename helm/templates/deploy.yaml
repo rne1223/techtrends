@@ -20,9 +20,9 @@ spec:
 {{ toYaml .Values.resources | indent 10}}
         ports:
         - containerPort: {{ .Values.containerPort }} 
-          livenessProbe:
-            httpGet:
-  {{ toYaml .Values.livenessProbe | indent 12 }}
-          readinessProbe:
-            httpGet:
-  {{toYaml .Values.readinessProbe | indent 12 }}
+        livenessProbe:
+          httpGet:
+{{ toYaml .Values.livenessProbe | indent 12 }}
+        readinessProbe:
+          httpGet:
+{{toYaml .Values.readinessProbe | indent 12 }}
