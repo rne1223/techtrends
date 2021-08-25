@@ -17,12 +17,12 @@ spec:
       - name: techtrends
         image: {{ .Values.image.repository }}:{{ .Values.image.tag }} 
         resources:
-        {{toYaml .Values.resources | indent 10}}
+        {{ toYaml .Values.resources | indent 10 }}
         ports:
         - containerPort: {{ tpl .Values.containerPort . }} 
         livenessProbe:
           httpGet:
-          {{ tpl (toYaml .Values.resources.livenessProbe) . | indent 12}}
+          {{ tpl (toYaml .Values.resources.livenessProbe) . | indent 12 }}
         readinessProbe:
           httpGet:
-          {{ tpl (toYaml .Values.resources.readinessProbe) . | indent 12}}
+          {{ tpl (toYaml .Values.resources.readinessProbe) . | indent 12 }}
